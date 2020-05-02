@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+}
+  
+th.mat-sort-header-sorted {
+    color: black;
+}
+.edit-icon , .save-icon{
+    cursor: pointer;
+}
+
+.edit-icon:hover, .save-icon:hover{
+  color: blue;
+}
+.example-container {
+    display: flex;
+    flex-direction: column;
+}
+  
+.example-container > * {
+    width: 100%;
+}
+mat-form-field{
+    width: 100%;
+}

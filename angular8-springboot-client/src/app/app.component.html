@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <span>Angular 8 + Spring Boot 2 CRUD App</span>
+  <!-- This fills the remaining space of the current row -->
+  <span class="example-fill-remaining-space"></span>
+  <a routerLink="employees" class="nav-link" routerLinkActive="active">Employee List</a>
+</mat-toolbar>
+
+<div class="container">
+  <br>
+  <mat-card>
+    <mat-card-content>
+      <router-outlet></router-outlet>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<footer class="footer">
+  <mat-toolbar color="primary">
+    <span class="m-auto">All Rights Reserved @ 2020</span>
+  </mat-toolbar>
+</footer>

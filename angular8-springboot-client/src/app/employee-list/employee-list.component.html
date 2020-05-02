@@ -1,0 +1,155 @@
+<!-- <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h2>Employee List</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees | async">
+          <td>{{employee.firstName}}</td>
+          <td>{{employee.lastName}}</td>
+          <td>{{employee.emailId}}</td>
+          <td><button (click)="deleteEmployee(employee.id)" class="btn btn-danger">Delete</button>
+              <button (click)="updateEmployee(employee.id)" class="btn btn-info" style="margin-left: 10px">Update</button>
+              <button (click)="employeeDetails(employee.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+<div style="padding: 20px;">
+  <h4>
+    Employee List
+    <p style="float: right;">
+      <span (click)="addEmployee(addEmployeeContent)">
+        <i class="fas fa-plus-circle"></i>
+        <i></i>
+      </span>
+    </p>
+  </h4>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> No </th>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+    </ng-container>
+
+    <!-- First Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <ng-template [ngIf]="!editable[i]">
+          {{element.firstName}}
+        </ng-template>
+        <mat-form-field *ngIf="editable[i]">
+          <input matInput [(ngModel)]="element.firstName" type="text">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <!-- Last Name Column -->
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <ng-template [ngIf]="!editable[i]">
+          {{element.lastName}}
+        </ng-template>
+        <mat-form-field *ngIf="editable[i]">
+          <input matInput [(ngModel)]="element.lastName" type="text">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="emailId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email Id </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <ng-template [ngIf]="!editable[i]">
+          {{element.emailId}}
+        </ng-template>
+        <mat-form-field *ngIf="editable[i]">
+          <input matInput [(ngModel)]="element.emailId" type="text">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <!-- Edit Column -->
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <span (click)="editable[i] = true" class="edit-icon" *ngIf="!editable[i]">
+          <i class="fas fa-pen"></i>
+        </span>
+        <span (click)="editable[i] = false; updateEmployee(element)" class="save-icon" *ngIf="editable[i]">
+          <i class="far fa-save"></i>
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- Delete Column -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <span (click)="deleteEmployee(element.id)" class="edit-icon">
+          <i class="fas fa-trash"></i>
+        </span>
+      </td>
+    </ng-container>
+    
+    <!-- Details Column -->
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Details </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <span (click)="employeeDetails(element.id)" class="edit-icon">
+          <i class="fas fa-info"></i>
+        </span>
+      </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<ng-template #addEmployeeContent let-addEmployeeModal>
+  <div class="modal-header">
+    <div class="modal-title">
+      <h4>Add Employee</h4>
+    </div>
+    <button #closeBtn type="button" class="close" aria-label="Close"
+      (click)="addEmployeeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body example-container">
+    <form [formGroup]="addEmployeeForm" novalidate (submit)="onSubmitEmployeeForm()">
+      <mat-form-field>
+        <input matInput placeholder="First Name" formControlName="firstName">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="Last Name" formControlName="lastName">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="emailId">
+      </mat-form-field>
+      <br>
+      <button mat-button color="primary" type="submit" [disabled]="!addEmployeeForm.valid">Submit</button>
+    </form>
+  </div>
+</ng-template>
+
+
